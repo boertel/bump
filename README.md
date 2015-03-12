@@ -1,31 +1,36 @@
+Bump version number for ```bower.json``` and ```package.json``` according to [semver](http://semver.org/).
+
 ## Installation
 
-copy `bump` file in one of the $PATH folder:
+copy `bump` file in one of the ```$PATH`` folder, example:
 
 ```
-cp bump /usr/local/bin/
+git clone git@github.com:boertel/bump.git
+cp ./bump/bump /usr/local/bin/
 chmod +x /usr/local/bin/bump
 ```
 
 ## Usage
 
 Show all the version for each file:
-```bump```
+```
+bump
+```
 
 
-According to [semver](http://semver.org/):
+According to [semver](http://semver.org/) which defines version number as follow: MAJOR.MINOR.PATCH:
 
-increment *patch* part of the version number:
+increment *patch*:
 ```
 bump patch [message]
 ```
 
-increment *minor* part of the version number:
+increment *minor*:
 ```
 bump minor [message]
 ```
 
-increment *major* part of the version number:
+increment *major*:
 ```
 bump major [message]
 ```
@@ -36,4 +41,4 @@ bump 0.0.0 [message]
 ```
 
 
-For each of these options, you can define a ```message```, in this case, it would ```git commit``` the updated files and create the tag corresponding to this new version
+If ```message``` is defined, it will ```git commit``` the updated files and create the tag corresponding to the new version.
