@@ -42,3 +42,11 @@ bump 0.0.0 [message]
 
 
 If ```message``` is defined, it will ```git commit``` the updated files and create the tag corresponding to the new version.
+
+If your version is a single commit, you can do the following:
+```
+git add my-broken-file
+git commit "fix my-broken-file"
+bump patch !$
+```
+(`!$` = last argument of the last command, in our case: "fix my-broken-file")
