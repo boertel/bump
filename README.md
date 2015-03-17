@@ -1,8 +1,8 @@
-Bump version number for ```bower.json``` and ```package.json``` according to [semver](http://semver.org/).
+Bump version number for `bower.json` and `package.json` according to [semver](http://semver.org/).
 
 ## Installation
 
-copy `bump` file in one of the ```$PATH`` folder, example:
+copy `bump` file in one of the `$PATH` folder, example:
 
 ```
 git clone git@github.com:boertel/bump.git
