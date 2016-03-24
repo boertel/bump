@@ -1,8 +1,10 @@
 #!/bin/bash
 
+
 if [[ $# == 0 ]]; then
-    echo "usage: bump [patch|minor|major|x.x.x] message"
+    echo "usage: bump [patch|minor|major|x.x.x] x.x.x"
     echo ""
+    exit 1
 fi
 
 function increment { echo "$1 + 1" | bc; }
@@ -10,70 +12,54 @@ function increment { echo "$1 + 1" | bc; }
 function join { local IFS="$1"; shift; echo "$*"; }
 
 
-VERSION=$1
-MESSAGE=$2
+NEXT=$1
+VERSION=$2
 
-FILES=("package.json" "bower.json")
+PATTERN="^\(.*\)\.\(.*\)\.\(.*\)"
 
-
-for FILE in ${FILES[@]};
-do
-    if [[ ! -e $FILE ]]; then
-        continue
-    fi
-
-    RAW_VERSION=`cat $FILE | grep "version"`
-
-    PATTERN="^[[:space:]]*\"version\": \"\(.*\)\.\(.*\)\.\(.*\)\","
-    FIRST=`echo $RAW_VERSION | sed 's/'"$PATTERN"'/\1/'`
-    SECOND=`echo $RAW_VERSION | sed 's/'"$PATTERN"'/\2/'`
-    THIRD=`echo $RAW_VERSION | sed 's/'"$PATTERN"'/\3/'`
-
-    if [[ $# -gt 0 ]]; then
-        case $VERSION in
-        "patch")
-            THIRD=$(increment $THIRD)
-            ;;
-        "minor")
-            SECOND=$(increment $SECOND)
-            THIRD=0
-            ;;
-        "major")
-            FIRST=$(increment $FIRST)
-            SECOND=0
-            THIRD=0
-            ;;
-        *)
-            FIRST=$(echo $VERSION | cut -d "." -f 1)
-            SECOND=$(echo $VERSION | cut -d "." -f 2)
-            THIRD=$(echo $VERSION | cut -d "." -f 3)
-            ;;
-        esac
-    fi
-
-    NEXT_VERSION=$FIRST"."$SECOND"."$THIRD
-    TAG=v$NEXT_VERSION
-
-    echo -e "$FILE:\t$NEXT_VERSION"
-
-    if [[ $# -gt 0 && -n "$PREVIOUS_VERSION" && $PREVIOUS_VERSION != $NEXT_VERSION ]];then
-        echo "versions are inconsistent ($PREVIOUS_VERSION != $NEXT_VERSION). Run: bump to show the version of each file."
-        exit 1
-    fi
-    PREVIOUS_VERSION=$NEXT_VERSION
-
-    if [[ $# -gt 0 ]]; then
-        sed -i "" 's/"version": "\(.*\)",/"version": "'$NEXT_VERSION'",/' $FILE
-    fi
-
-done
-
-
-if [[ -n "$MESSAGE" ]]; then
-    git add $(join " " ${FILES[@]})
-    git commit -m "bump to $TAG"
-    git tag $TAG -m "$MESSAGE"
-    #git push origin $TAG
+FIRST=`echo $VERSION | sed 's/'"$PATTERN"'/\1/'`
+if [[ -z "$FIRST" ]]; then
+    FIRST=0
 fi
+
+SECOND=`echo $VERSION | sed 's/'"$PATTERN"'/\2/'`
+if [[ -z "$SECOND" ]]; then
+    SECOND=0
+fi
+
+THIRD=`echo $VERSION | sed 's/'"$PATTERN"'/\3/'`
+if [[ -z "$THIRD" ]]; then
+    THIRD=0
+fi
+
+if [[ $# -gt 0 ]]; then
+    case $NEXT in
+    "patch")
+        THIRD=$(increment $THIRD)
+        ;;
+    "minor")
+        SECOND=$(increment $SECOND)
+        THIRD=0
+        ;;
+    "major")
+        FIRST=$(increment $FIRST)
+        SECOND=0
+        THIRD=0
+        ;;
+    "init")
+        FIRST=0
+        SECOND=0
+        THIRD=0
+        ;;
+    *)
+        FIRST=$(echo $VERSION | cut -d "." -f 1)
+        SECOND=$(echo $VERSION | cut -d "." -f 2)
+        THIRD=$(echo $VERSION | cut -d "." -f 3)
+        ;;
+    esac
+fi
+
+NEXT_VERSION=$FIRST"."$SECOND"."$THIRD
+echo $NEXT_VERSION
 
 exit 0
