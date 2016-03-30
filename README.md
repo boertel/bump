@@ -33,4 +33,4 @@ Note: it resets the *patch* value
 1.0.0
 ```
 
-You can check out [git-release](boertel/git-extended/blob/master/git-release) git-release to compute next version of your git project according to your releases/tags.
+You can check out [git-release](https://github.com/boertel/git-extended/blob/master/git-release) to compute next version of your git project according to your releases/tags.
