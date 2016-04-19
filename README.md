@@ -1,4 +1,4 @@
-Bump version number for `bower.json` and `package.json` according to [semver](http://semver.org/).
+Increment the version according to [semver](http://semver.org/).
 
 ## Installation
 
@@ -11,42 +11,26 @@ chmod +x /usr/local/bin/bump
 ```
 
 ## Usage
-
-Show all the version for each file:
 ```
-bump
+bump [patch|minor|major] x.x.x
 ```
+where ```x.x.x``` is your version you want to increment.
 
-
-According to [semver](http://semver.org/) which defines version number as follow: MAJOR.MINOR.PATCH:
-
-increment *patch*:
+## Examples
 ```
-bump patch [message]
+> bump patch 0.0.2
+0.0.3
 ```
 
-increment *minor*:
 ```
-bump minor [message]
+> bump minor 0.0.3
+0.1.0
+```
+Note: it resets the *patch* value
+
+```
+> bump major 0.0.5
+1.0.0
 ```
 
-increment *major*:
-```
-bump major [message]
-```
-
-set a defined version number:
-```
-bump 0.0.0 [message]
-```
-
-
-If ```message``` is defined, it will ```git commit``` the updated files and create the tag corresponding to the new version.
-
-If your version is a single commit, you can do the following:
-```
-git add my-broken-file
-git commit "fix my-broken-file"
-bump patch !$
-```
-(`!$` = last argument of the last command, in our case: "fix my-broken-file")
+You can check out [git-release](https://github.com/boertel/git-extended/blob/master/git-release) to compute next version of your git project according to your releases/tags.
