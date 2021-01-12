@@ -1,0 +1,2 @@
+description=dumb bumping version command
+install=bin.install "bump"

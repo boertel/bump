@@ -18,7 +18,7 @@ if [[ "$NEXT" == "patch" || "$NEXT" == "minor" || "$NEXT" == "major" ]]; then
     VERSION=$2
 else
     # we assume it's init or x.x.x
-    if [[ $# == 2 ]]; then
+    if [[ -n $2 ]]; then
         (>&2 echo "can't increment from $2 to $1")
         exit 1
     fi
